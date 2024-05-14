@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    <!-- ======= Styles ====== -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <!-- =============== Navigation ================ -->
+     <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="football"></ion-icon>
+                        </span>
+                        <span class="title">Football club</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'sport_dashboard' %}">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'add_player' %}">
+                        <span class="icon">
+                            <ion-icon name="person-add-outline"></ion-icon>
+                        </span>
+                        <span class="title">Add player</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'select_player' %}">
+                        <span class="icon">
+                            <ion-icon name="person-remove-outline"></ion-icon>
+                        </span>
+                        <span class="title">Sell player</span>
+                    </a>
+                </li>
+
+
+                 <li>
+                    <a href="{% url 'player_list' %}">
+                        <span class="icon">
+                            <ion-icon name="people-outline"></ion-icon>
+                        </span>
+                        <span class="title">Players list</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'add_match' %}">
+                        <span class="icon">
+                            <ion-icon name="medal-outline"></ion-icon>
+                        </span>
+                        <span class="title">Match played</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'analyse' %}">
+                        <span class="icon">
+                            <ion-icon name="analytics-outline"></ion-icon>
+                        </span>
+                        <span class="title">Matches Analyse</span>
+                    </a>
+                </li>
+                 <li>
+                    <a href="{% url 'add_staff' %}">
+                        <span class="icon">
+                            <ion-icon name="person-add"></ion-icon>
+                        </span>
+                        <span class="title">Add staff</span>
+                    </a>
+                </li>
+                 <li>
+                    <a href="{% url 'select_staff' %}">
+                        <span class="icon">
+                            <ion-icon name="person-remove"></ion-icon>
+                        </span>
+                        <span class="title">Remove staff</span>
+                    </a>
+                </li>
+                 <li>
+                    <a href="{% url 'staff_list' %}">
+                        <span class="icon">
+                            <ion-icon name="people-circle-outline"></ion-icon>
+                        </span>
+                        <span class="title">Staff list</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+
+
+                <div class="user">
+                   <img src="{{ user.photo.url }}" alt="">
+                </div>
+            </div>
+
+            <!-- ======================= Cards ================== -->
+
+            <!-- ================ Order Details List ================= -->
+
+
+            <div style="margin-left: 250px" class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>Matches Analyse</h2>
+
+                    </div>
+                    <div id="chartContainer" style="width: 100%; height: 500px;">
+        <canvas id="ticketSalesChart"></canvas>
+    </div>
+
+
+
+                </div>
+            </div>
+
+                <!-- ================= New Customers ================ -->
+
+
+    <!-- =========== Scripts =========  -->
+    <script>
+        let list = document.querySelectorAll(".navigation li");
+
+function activeLink() {
+  list.forEach((item) => {
+    item.classList.remove("hovered");
+  });
+  this.classList.add("hovered");
+}
+
+list.forEach((item) => item.addEventListener("mouseover", activeLink));
+
+// Menu Toggle
+let toggle = document.querySelector(".toggle");
+let navigation = document.querySelector(".navigation");
+let main = document.querySelector(".main");
+
+toggle.onclick = function () {
+  navigation.classList.toggle("active");
+  main.classList.toggle("active");
+};
+        // Функция для отображения всплывающего сообщения
+        function displayPopup(message) {
+            var popup = document.getElementById("popup");
+            popup.innerText = message;
+            popup.style.display = "block";
+            setTimeout(function() {
+                popup.style.display = "none";
+            }, 5000); // Скрыть всплывающее окно через 5 секунд
+        }
+         document.addEventListener('DOMContentLoaded', function() {
+            var ctx = document.getElementById('ticketSalesChart').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['{{ months|join:"','" }}'],
+                    datasets: [{
+                        label: 'Ticket Sales',
+                        data: [{{ ticket_sales_data|join:"," }}],
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Revenue',
+                        data: [{{ revenue_data|join:"," }}],
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+    <!-- ====== ionicons ======= -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>

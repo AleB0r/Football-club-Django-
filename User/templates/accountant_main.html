@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
+    <!-- ======= Styles ====== -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+
+<body>
+    <!-- =============== Navigation ================ -->
+    <div class="container">
+        <div class="navigation">
+            <ul>
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="football"></ion-icon>
+                        </span>
+                        <span class="title">Football Club</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'accountant_dashboard' %}">
+                        <span class="icon">
+                            <ion-icon name="home-outline"></ion-icon>
+                        </span>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'payment_list' %}">
+                        <span class="icon">
+                            <ion-icon name="cash-outline"></ion-icon>
+                        </span>
+                        <span class="title">All payments</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <span class="icon">
+                            <ion-icon name="log-out-outline"></ion-icon>
+                        </span>
+                        <span class="title">Sign Out</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- ========================= Main ==================== -->
+        <div class="main">
+            <div class="topbar">
+                <div class="toggle">
+                    <ion-icon name="menu-outline"></ion-icon>
+                </div>
+
+
+
+                <div class="user">
+                   <img src="{{ user.photo.url }}" alt="">
+                </div>
+            </div>
+
+            <!-- ======================= Cards ================== -->
+            <div class="cardBox">
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ average_player_salary|floatformat:2 }}</div>
+                        <div class="cardName">Avg Salary Player</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="diamond-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ average_staff_salary|floatformat:2 }}</div>
+                        <div class="cardName">AVG Salary Staff</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="wallet-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ total }}</div>
+                        <div class="cardName">Total people</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="chatbubbles-outline"></ion-icon>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div>
+                        <div class="numbers">{{ club_budget }}$</div>
+                        <div class="cardName">Budget</div>
+                    </div>
+
+                    <div class="iconBx">
+                        <ion-icon name="cash-outline"></ion-icon>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================ Order Details List ================= -->
+            <div id="popup" style="display: none;"></div>
+
+            <div style="width: 2445px" class="details">
+                <div class="recentOrders">
+                    <div class="cardHeader">
+                        <h2>Recent Payments</h2>
+                        <a href="{% url 'make_payment' %}" class="btn">Make payment</a>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>Date</td>
+                                <td>Player count</td>
+                                <td>Player payments</td>
+                                <td>Staff count</td>
+                                <td>Staff payments</td>
+                                <td>Total</td>
+                                <td>Payer</td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+    {% for payment in latest_payments %}
+    <tr>
+        <td>{{ payment.payment_date }}</td>
+        <td>{{ payment.player_count }}</td>
+        <td>{{ payment.player_payments }}$</td>
+        <td>{{ payment.staff_count }}</td>
+        <td>{{ payment.staff_payments }}$</td>
+        <td>{{ payment.total_payments }}$</td>
+        <td>{{ payment.payer.last_name }}</td>
+    </tr>
+    {% endfor %}
+</tbody>
+
+                    </table>
+                </div>
+
+                <!-- ================= New Customers ================ -->
+
+
+    <!-- =========== Scripts =========  -->
+    <script src="{% static 'js/admin.js' %}">
+        // Функция для отображения всплывающего сообщения
+        function displayPopup(message) {
+            var popup = document.getElementById("popup");
+            popup.innerText = message;
+            popup.style.display = "block";
+            setTimeout(function() {
+                popup.style.display = "none";
+            }, 5000); // Скрыть всплывающее окно через 5 секунд
+        }
+
+        // Вызываем displayPopup() при загрузке страницы
+        window.onload = function() {
+            {% if error_message %}
+            displayPopup("{{ error_message }}");
+            {% endif %}
+        };
+    </script>
+
+    <!-- ====== ionicons ======= -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>
