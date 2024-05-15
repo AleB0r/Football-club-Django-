@@ -9,7 +9,7 @@ from club.models import Club
 
 
 # Create your views here.
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def add_player(request):
     if request.method == 'POST':
         form = PlayerForm(request.POST, request.FILES)
@@ -25,7 +25,7 @@ def add_player(request):
         form = PlayerForm()
     return render(request, 'add_player.html', {'form': form})
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def delete_player(request):
     if request.method == 'POST':
         try:
@@ -47,14 +47,14 @@ def delete_player(request):
             pass  # Обработка случая, когда пользователя не существует
     return redirect('sport_dashboard')
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def select_player(request):
     players = Players.objects.all()
     for player in players:
         print(player.id)
     return render(request, 'sell_player.html', {'players': players})
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def player_list(request):
     # Получаем список всех игроков
     players = Players.objects.all()

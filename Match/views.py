@@ -5,7 +5,7 @@ from club.models import Club
 from .models import Match
 from .forms import MatchForm
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def add_match(request):
     if request.method == 'POST':
         form = MatchForm(request.POST)

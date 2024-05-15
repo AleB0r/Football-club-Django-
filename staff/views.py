@@ -8,7 +8,7 @@ from staff.models import Staff
 
 
 # Create your views here.
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def add_staff(request):
     if request.method == 'POST':
         form = StaffForm(request.POST)
@@ -19,7 +19,7 @@ def add_staff(request):
         form = StaffForm()
     return render(request, 'add_staff.html', {'form': form})
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def delete_staff(request):
     if request.method == 'POST':
         try:
@@ -30,12 +30,12 @@ def delete_staff(request):
             pass  # Обработка случая, когда пользователя не существует
     return redirect('sport_dashboard')
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def select_staff(request):
     staffes = Staff.objects.all()
     return render(request, 'select_staff.html', {'staffes': staffes})
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def staff_list(request):
     # Получаем список всех игроков
     staffes = Staff.objects.all()

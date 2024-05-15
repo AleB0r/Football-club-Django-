@@ -6,7 +6,7 @@ from club.models import Club
 
 
 # Create your views here.
-@user_type_required(['marketer'])
+@user_type_required(['marketer','admin'])
 def add_sponsor(request):
     if request.method == 'POST':
         form = SponsorForm(request.POST, request.FILES)

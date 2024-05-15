@@ -14,7 +14,7 @@ from django.db.models import Sum
 from django.http import JsonResponse
 from django.utils import timezone
 
-@user_type_required(['accountant'])
+@user_type_required(['accountant','admin'])
 def make_payment(request):
     # Получаем пользователя, сделавшего выплату
     user = request.user
@@ -55,7 +55,7 @@ def make_payment(request):
     JsonResponse({'message': 'Выплата успешно выполнена.', 'total_payment_amount': total_payment_amount}, status=200)
     return redirect('accountant_dashboard')
 
-@user_type_required(['accountant'])
+@user_type_required(['accountant','admin'])
 def all_payments(request):
     payments = Payment.objects.all()
     return render(request, 'payment_list.html', {'payments': payments})

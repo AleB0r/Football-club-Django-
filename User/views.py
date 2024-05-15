@@ -83,7 +83,7 @@ def admin_dashboard(request):
         'latest_registered_users': latest_registered_users,
     })
 
-@user_type_required(['marketer'])
+@user_type_required(['marketer','admin'])
 def marketer_dashboard(request):
     today = timezone.now().date()
     # Получаем всех активных спонсоров, с кем сотрудничество еще не закончилось
@@ -94,7 +94,7 @@ def acces_404(request):
     return render(request, '404.html')
 
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def sport_dashboard(request):
     # Получаем объект клуба (предположим, что это единственный клуб)
     club = Club.objects.first()
@@ -162,7 +162,7 @@ def login_view(request):
     else:
         return render(request, 'auth.html')
 
-@user_type_required(['accountant'])
+@user_type_required(['accountant','admin'])
 def accountant_dashboard(request):
     # Получаем общее количество игроков
     total_players = Players.objects.filter(contract_end_date__gte=timezone.now()).count()
@@ -193,7 +193,7 @@ def accountant_dashboard(request):
         'latest_payments': latest_payments,
     })
 
-@user_type_required(['sports_director'])
+@user_type_required(['sports_director','admin'])
 def ticket_sales_histogram(request):
     # Get the current date
     current_date = datetime.now()
