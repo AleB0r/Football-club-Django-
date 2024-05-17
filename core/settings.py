@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-3pwq(e9*qrrmlh0euffc&%gqj+jsuu+kfd=v7=z1$$+sk)fp(9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -145,3 +145,11 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.example.com'  # Адрес вашего SMTP-сервера
+EMAIL_PORT = 587  # Порт вашего SMTP-сервера (обычно 587 для TLS или 465 для SSL)
+EMAIL_USE_TLS = True  # Использовать ли TLS-шифрование (рекомендуется)
+EMAIL_HOST_USER = 'sasha2014993@gmail.com'  # Ваше имя пользователя SMTP
+EMAIL_HOST_PASSWORD = 'sasha8523698'  # Ваш пароль SMTP

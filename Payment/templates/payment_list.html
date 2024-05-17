@@ -9,8 +9,52 @@
     <!-- ======= Styles ====== -->
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+<style>
+    .button {
+        margin-left: 1250px;
+        margin-top: 10px;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #2a2185;
+  border: none;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 28px;
+  padding: 20px;
+  width: 300px;
+  transition: all 0.5s;
+  cursor: pointer;
 
+float: right;
+}
+
+.button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.button:hover span {
+  padding-right: 25px;
+}
+
+.button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
 <body>
     <!-- =============== Navigation ================ -->
     <div class="container">
@@ -75,7 +119,7 @@
 
             <div style="width: 2445px" class="details">
             <div class="recentOrders">
-                <div style="margin-left: 750px" class="cardHeader">
+                <div style="margin-left: 670px" class="cardHeader">
                         <h2>ALL Payments</h2>
 
                     </div>
@@ -107,9 +151,19 @@
     {% endfor %}
 </tbody>
 
-                    </table>
-                </div>
 
+
+                    </table>
+                <form id="report-form" action="{% url 'generate_report' %}" method="post">
+                    {% csrf_token %}
+    <!-- Возможно, добавить скрытое поле для передачи CSRF-токена -->
+    <button class="button" type="submit">Make a Report</button>
+</form>
+
+                </div>
+            </div>
+        </div>
+    </div>
                 <!-- ================= New Customers ================ -->
 
 
@@ -124,6 +178,7 @@
                 popup.style.display = "none";
             }, 5000); // Скрыть всплывающее окно через 5 секунд
         }
+
     </script>
 
     <!-- ====== ionicons ======= -->

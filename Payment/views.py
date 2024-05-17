@@ -2,6 +2,8 @@ from django.http import JsonResponse
 from django.db.models import Sum
 from django.shortcuts import redirect, render
 from django.utils import timezone
+from django.http import HttpResponse
+from openpyxl import Workbook
 
 from Payment.models import Payment
 from Player.models import Players
@@ -59,3 +61,29 @@ def make_payment(request):
 def all_payments(request):
     payments = Payment.objects.all()
     return render(request, 'payment_list.html', {'payments': payments})
+
+@user_type_required(['accountant','admin'])
+def generate_report(request):
+    # Получаем все платежи и сортируем их по дате выплаты
+    payments = Payment.objects.all().order_by('payment_date')
+
+    # Создаем новую книгу Excel
+    wb = Workbook()
+    ws = wb.active
+
+    # Заголовки столбцов
+    ws.append(["Date", "Player Count", "Player Payments", "Staff Count", "Staff Payments", "Total", "Payer"])
+
+    # Данные о платежах
+    for payment in payments:
+        ws.append([payment.payment_date, payment.player_count, payment.player_payments,
+                payment.staff_count, payment.staff_payments, payment.total_payments,
+                payment.payer.last_name])
+
+    # Создаем HTTP-ответ с содержимым Excel-файла
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="payments_report.xlsx"'
+    # Сохраняем книгу в файл Excel и записываем ее содержимое в HTTP-ответ
+    print('hi')
+    wb.save(response)
+    return response

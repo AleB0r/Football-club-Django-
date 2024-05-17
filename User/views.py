@@ -1,7 +1,10 @@
 from calendar import monthrange
 from datetime import date, datetime, timedelta
 
+from django.contrib import messages
+from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.views import LogoutView
+
 from django.db.models import Avg, Sum, DecimalField, ExpressionWrapper, F
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
@@ -90,8 +93,8 @@ def marketer_dashboard(request):
     active_sponsors = Sponsor.objects.filter(cooperation_end_date__gte=today)
     return render(request, 'marketer_main.html', {'active_sponsors': active_sponsors})
 
-def acces_404(request):
-    return render(request, '404.html')
+def acces_404(request, exception):
+    return render(request, '404.html', status=404)
 
 
 @user_type_required(['sports_director','admin'])
@@ -246,3 +249,19 @@ def ticket_sales_histogram(request):
         'ticket_sales_data': ticket_sales_data,
         'revenue_data': revenue_data,
     })
+
+
+def forgot_password(request):
+    if request.method == 'POST':
+        form = PasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                from_email="sasha2014993@gmail.com",
+            )
+            messages.success(request, 'Instructions for resetting your password have been emailed to you.')
+            return redirect('login')  # Redirect to login page after sending reset instructions
+    else:
+        form = PasswordResetForm()
+    return render(request, 'forget.html', {'form': form})

@@ -19,6 +19,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
+from User.views import acces_404
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,3 +31,5 @@ urlpatterns = [
     path('', include('Payment.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = acces_404

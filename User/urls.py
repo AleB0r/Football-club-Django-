@@ -1,6 +1,7 @@
 from django.urls import path
+from django.http import Http404
 from .views import login_view, create_user, admin_dashboard, delete_user, select_user, logout_user, marketer_dashboard, \
-    sport_dashboard, accountant_dashboard, acces_404, ticket_sales_histogram
+    sport_dashboard, accountant_dashboard, acces_404, ticket_sales_histogram, forgot_password
 
 urlpatterns = [
     path('login/', login_view, name='login'),
@@ -13,8 +14,9 @@ urlpatterns = [
     path('marketer/dashboard/', marketer_dashboard, name='marketer_dashboard'),
     path('sport_main/', sport_dashboard, name='sport_dashboard'),
     path('accountant/dashboard/', accountant_dashboard, name='accountant_dashboard'),
-    path('404/', acces_404, name='404'),
-    path('analyse/', ticket_sales_histogram, name='analyse')
-
+    path('analyse/', ticket_sales_histogram, name='analyse'),
+    path('forgot/', forgot_password, name='forgot'),
     # Другие URL-адреса вашего приложения...
 ]
+
+
