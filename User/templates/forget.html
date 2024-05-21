@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Login</title>
+  </head>
+  <style>
+      body{
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(183,75,210,1) 100%, rgba(252,70,107,1) 100%);
+}
+.bg__img {
+  width: 700px;
+  margin-top: 100px;
+  margin-left: 150px;
+}
+.user {
+  width: 100px;
+  height: 100px;
+}
+.forgot__link {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #bababa;
+  font-weight: 700;
+  text-decoration: none;
+  transition: .2s;
+}
+.forgot__link:hover {
+  color: #838383;
+}
+.form-box{
+  width: 300px;
+  padding: 50px;
+  padding-top: 90px;
+  padding-bottom: 90px;
+  position: absolute;
+  box-shadow: -15px 53px 68px -9px rgba(0,0,0,0.75);
+  border-top-left-radius: 25%;
+  border-bottom-right-radius: 25%;
+  top: 50%;
+  left: 60%;
+  transform: translateY(-50%);
+  background: #fff;
+  text-align: center;
+}
+.form-box h1{
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 28px;
+}
+.form-box input[type = "text"],.form-box input[type = "password"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  font-size: 16px;
+  border: none;
+  border-bottom: 2px solid #6856EB;
+  padding: 14px 15px;
+  width: 200px;
+  outline: none;
+  transition: 0.25s;
+}
+.form-box input[type = "text"]:focus,.form-box input[type = "password"]:focus{
+  width: 250px;
+  border-color: #B44BD3;
+}
+.form-box input[type = "submit"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #B44BD3;
+  width: 230px;
+  height: 30px;
+  outline: none;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+.form-box input[type = "submit"]:hover{
+  background: #9A50DC;
+}
+@media only screen and (max-width: 1350px) {
+  .bg__img {
+    margin-left: 50px;
+    margin-top: 80px;
+    width: 550px;
+  }
+}
+@media only screen and (max-width: 1025px) {
+  .bg__img {
+    display: none;
+  }
+  body {
+    background: #455DF9;
+  }
+  .form-box{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+  </style>
+  <body>
+    <div class="form-container">
+      {% load static %}
+  <img src="{% static 'img/bgImg.jpg' %}" alt="" class="bg__img">
+  <form class="form-box" action="{% url 'forgot' %}"  method="post">
+    <img src="{% static 'img/user.png' %}"  alt="" class="user">
+    <h1>Forgot Password</h1>
+    {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Reset Password">
+  </form>
+</div>
+
+  </body>
+</html>
